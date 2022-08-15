@@ -2,10 +2,16 @@ const express = require('express')
 
 
 const app = express()
-app.set('view engine', 'ejs')
 
+//View Engine and Use options
+app.set('view engine', 'ejs')
+app.use(express.static('css'))
+app.use(express.urlencoded({ extended: true }));
+
+
+//Routes
 app.get('/', function(req,res){
-    res.render('index')
+    res.render('login')
 })
 
 
@@ -19,6 +25,7 @@ app.get('/', function(req,res){
 
 
 
+//Listener
 
 app.listen(3000, function(){
     console.log("App running on port 3000")
