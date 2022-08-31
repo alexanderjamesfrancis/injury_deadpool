@@ -4,6 +4,9 @@ module.exports = {
             './views/*.ejs'],
   theme: {
     extend: {
+      colors: {
+        darkishYellow: '#e8b30c'
+      }
       
     },
   },
