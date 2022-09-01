@@ -1,3 +1,28 @@
 <%- include ('partials/header') %>
-
+<div class="flex flex-col mx-auto items-center bg-darkishYellow">
+    <div>
+        <img src="/images/logos/cover.png" class=" w-full h-full md:block hidden" alt="ID-Logo">
+        <img src="/images/logos/default.png" class=" w-full h-full md:hidden" alt="ID-Logo">
+    </div>
+    <div class="flex flex-col w-full items-center ">
+        <form class=" space-y-4 justify-between items-center" action="post">
+            <div class="flex justify-between space-x-2">
+                <label for="username">Username:</label>
+                <input class="rounded-lg" type="text" name="username" id="">
+            </div>
+            <div class="flex justify-between space-x-2">
+                <label for="password">Email:</label>
+                <input class="rounded-lg" type="text" name="email" id="">
+            </div>
+            <div class="flex justify-between space-x-2">
+                <label for="password">Password:</label>
+                <input class="rounded-lg" type="text" name="password" id="">
+            </div>
+            <div class="flex flex-col items-center justify-center w-full space-y-4">
+                <button class=" py-2 px-6 border-2 rounded-lg " type="submit">Login</button>
+            </div>
+            
+        </form>
+    </div>
+</div> 
 <% include ('partials/footer') %>

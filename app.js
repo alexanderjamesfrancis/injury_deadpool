@@ -29,9 +29,27 @@ app.route('/')
         res.render('login')
     })
 
+    .post(function(req,res){
+        //Post checks the databases for this info a redirects if it is true. If false, a window/pan will appear telling the userr they have failed 
+        res.redirect('login')
+    })
+
 app.route('/register')
     .get(function(req,res){
         res.render('register')
+    })
+    .post(function(req,res){
+        const newUser = new userProfile({
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password
+        })
+        userProfile.find({}, function(err, foundUsers){
+            //If user already exists - show err,
+            //Else confirm the registation
+        })
+
+        res.redirect('register')
     })
 
 
