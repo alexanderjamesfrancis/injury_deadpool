@@ -29,6 +29,11 @@ app.route('/')
         res.render('login')
     })
 
+app.route('/register')
+    .get(function(req,res){
+        res.render('register')
+    })
+
 
 
 

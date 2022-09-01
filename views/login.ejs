@@ -1,17 +1,22 @@
 <%- include ('partials/header') %>
-<div class="flex flex-col mx-auto items-center justify-center bg-darkishYellow">
+<div class="flex flex-col mx-auto items-center bg-darkishYellow">
     <div>
-        <img src="/images/logos/cover.png" class=" w-full h-full" alt="ID-Logo">
+        <img src="/images/logos/cover.png" class=" w-full h-full md:block hidden" alt="ID-Logo">
+        <img src="/images/logos/default.png" class=" w-full h-full md:hidden" alt="ID-Logo">
     </div>
-    <div>
-        <form action="post">
-            <div>
+    <div class="flex flex-col w-full items-center ">
+        <form class=" space-y-4 justify-between items-center" action="post">
+            <div class="flex justify-between space-x-2">
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="">
+                <input class="rounded-lg" type="text" name="username" id="">
             </div>
-            <div>
+            <div class="flex justify-between space-x-2">
                 <label for="password">Password:</label>
-                <input type="text" name="username" id="">
+                <input class="rounded-lg" type="text" name="username" id="">
+            </div>
+            <div class="flex flex-col items-center justify-center w-full space-y-4">
+                <button class=" py-2 px-6 border-2 rounded-lg " type="submit">Login</button>
+                <a class="" href="register.ejs">Not a member? Click Here</a>
             </div>
             
         </form>
