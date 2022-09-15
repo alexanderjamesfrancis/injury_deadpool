@@ -1,8 +1,17 @@
+const { info } = require('console')
 const express = require('express')
 const mongoose = require('mongoose')
 const path = require("path")
 
 const app = express()
+
+// Plan notes:
+// 1. Config userDB so it can take info
+// 1.1 Test functionality of taking users 
+// 1.2 Make diff pages for Login and Register
+// 2. Add some encryption (Looking at passport but may consider other follwing some google)
+// 2.1 Test encryption works 
+// 3. Config how pages will be presented
 
 //View Engine and Use options
 app.set('views', path.join(__dirname, 'views'))
@@ -11,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 
 // Mongoose and DB settings
-mongoose.connect('mongodb://localhost:27017/wikiDB', { useNewUrlParser:true})
+mongoose.connect('mongodb://localhost:27017/userDB', { useNewUrlParser:true})
 
 const newUserSchema = new mongoose.Schema({
     email: String,
