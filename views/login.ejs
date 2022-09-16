@@ -5,18 +5,18 @@
         <img src="/images/logos/default.png" class=" w-full h-full md:hidden" alt="ID-Logo">
     </div>
     <div class="flex flex-col w-full items-center ">
-        <form class=" space-y-4 justify-between items-center" action="post">
+        <form class=" space-y-4 justify-between items-center" method="post">
             <div class="flex justify-between space-x-2">
                 <label for="username">Username:</label>
                 <input class="rounded-lg" type="text" name="username" id="">
             </div>
             <div class="flex justify-between space-x-2">
                 <label for="password">Password:</label>
-                <input class="rounded-lg" type="text" name="username" id="">
+                <input class="rounded-lg" type="password" name="username" id="">
             </div>
             <div class="flex flex-col items-center justify-center w-full space-y-4">
                 <button class=" py-2 px-6 border-2 rounded-lg " type="submit">Login</button>
-                <a class="" href="register.ejs">Not a member? Click Here</a>
+                <a class="" href="register">Not a member? Click Here</a>
             </div>
             
         </form>

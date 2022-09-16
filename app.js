@@ -39,8 +39,24 @@ app.route('/')
     })
 
     .post(function(req,res){
+        userProfile.find({username: req.body.username}, function(err, foundUser){
+            if (err) {
+                console.log(err)
+                res.render(err)
+            } else {
+                if (foundUser) {
+                    if (foundUser.password === req.body.password) {
+                        console.log("This has been logged in")
+                        res.redirect("/home")
+                    } else {
+                        res.redirect('/')
+                    }
+                }
+            }
+
+        })
         //Post checks the databases for this info a redirects if it is true. If false, a window/pan will appear telling the userr they have failed 
-        res.redirect('login')
+        
     })
 
 app.route('/register')
@@ -48,20 +64,51 @@ app.route('/register')
         res.render('register')
     })
     .post(function(req,res){
+        console.log(req.body)
         const newUser = new userProfile({
             email: req.body.email,
             username: req.body.username,
             password: req.body.password
         })
-        userProfile.find({}, function(err, foundUsers){
+        userProfile.findOne({email: newUser.email, username: newUser.username}, function(err, foundUsers){
+            if (!foundUsers) {
+                newUser.save(function(err){
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.redirect("/")
+                    }
+                })
+            }
+            
+            else{ if (foundUsers.email != newUser.email) {
+                    if (foundUsers.username != newUser.username){
+                        newUser.save(function(err){
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                res.redirect("/")
+                            }
+                        })
+                        
+                    }
+
+            }
+                
+             
+            //Activate Spans on the page and redirect back to the page to reset.
+            //Need to confirm on page if registration has been logged. 
             //If user already exists - show err,
             //Else confirm the registation
-        })
+                }
 
-        res.redirect('register')
+        
     })
-
-
+    })
+app.route('/home')
+    .get(function(req, res){
+        res.render('home')
+    })
 
 
 
