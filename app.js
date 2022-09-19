@@ -2,13 +2,17 @@ const { info } = require('console')
 const express = require('express')
 const mongoose = require('mongoose')
 const path = require("path")
+const passport = require("passport")
+const passportLocalMongoose = require('passport-local-mongoose')
+const session = require('express-session')
+const passport = require('passport')
 
 const app = express()
 
 // Plan notes:
-// 1. Config userDB so it can take info
-// 1.1 Test functionality of taking users 
-// 1.2 Make diff pages for Login and Register
+// 1. Config userDB so it can take info !tick!
+// 1.1 Test functionality of taking users  !tick!
+// 1.2 Make diff pages for Login and Register !tick!
 // 2. Add some encryption (Looking at passport but may consider other follwing some google)
 // 2.1 Test encryption works 
 // 3. Config how pages will be presented
@@ -19,6 +23,17 @@ app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 
+// Passport and Sessions
+
+app.use(session({
+    secret:'Thisisthesecretkey',
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 // Mongoose and DB settings
 mongoose.connect('mongodb://localhost:27017/userDB', { useNewUrlParser:true})
 
@@ -28,9 +43,16 @@ const newUserSchema = new mongoose.Schema({
     password: String
 })
 
+newUserSchema.plugin(passportLocalMongoose)
+
 const userProfile = mongoose.model(
     "userProfile", newUserSchema
 )
+
+passport.use(userProfile.createStrategy())
+
+passport.serializeUser(userProfile.serializeUser())
+passport.deserializeUser(userProfile.deserializeUser())
 
 //Routes
 app.route('/')
@@ -65,18 +87,23 @@ app.route('/register')
     })
     .post(function(req,res){
         console.log(req.body)
-        const newUser = new userProfile({
+        const newUser = {
             email: req.body.email,
             username: req.body.username,
             password: req.body.password
-        })
+        }
         userProfile.findOne({email: newUser.email, username: newUser.username}, function(err, foundUsers){
             if (!foundUsers) {
-                newUser.save(function(err){
+                userProfile.register(newUser,function(err){
                     if (err) {
                         console.log(err)
+                        res.redirect('/register')
                     } else {
-                        res.redirect("/")
+                        passport.authenticate('local')(req,res, function(){
+                            console.log('This has works')
+                            res.redirect("/")
+                        })
+                        
                     }
                 })
             }
