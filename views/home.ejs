@@ -1,11 +1,17 @@
 <%- include ('partials/header') %>
 
-     <!--Global Container-->
+     <!--Global Container
+
+    Sort Header with Hambuger menu
+
+    Config Profile Edit page
+    
+    -->
      <div class="flex flex-col">
         <!--Navbar-->
-            <nav class="container flex items-center justify-between min-w-full mx-auto px-6 border-b">
+            <nav class="container flex items-center justify-evenly min-w-full mx-auto px-6 border-b">
                 <a href="">
-                    <img width="20px" height="20px" src="/images/icons/arrow-left-long-solid.svg" alt="">
+                    <img class="h-2 w-2" src="/images/icons/arrow-left-long-solid.svg" alt="">
                 </a>
                 <h1>The Injury Deadpool</h1>
                 <!--Flex for items in NAV-->
@@ -39,5 +45,28 @@
             </div>
 
     <h1 class="text-6xl">Fuck all here yet</h1>
+
+    <section id="profileInfo">
+        <div>
+            <div>
+                <img src="" alt="">
+            </div>
+            <div id="profileStats">
+
+                <!--Use flex justify-between ITems Center to space out elements-->
+                <!--Add Template for profileStats using EJS
+                
+                    Stat: recent injury: Date (Use DateTime???)
+                    Stat: Points: Number
+                    Stat: Next Expected Injust: Date (Use DateTime???)  
+
+                -->
+            </div>
+        </div>
+       
+    </section>
+    <section id="leagueInfo">
+        <!-- Hydrate a Table with database info on recent injuries, winners and recent predictions from other users -->
+    </section>
     </body>
 <% include ('partials/footer') %>
