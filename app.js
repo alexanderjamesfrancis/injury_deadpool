@@ -25,7 +25,8 @@ mongoose.connect('mongodb://localhost:27017/userDB', { useNewUrlParser:true})
 const newUserSchema = new mongoose.Schema({
     email: String,
     username: String,
-    password: String
+    password: String,
+    
 })
 
 const userProfile = mongoose.model(
@@ -47,7 +48,7 @@ app.route('/')
                 if (foundUser) {
                     if (foundUser.password === req.body.password) {
                         console.log("This has been logged in")
-                        res.redirect("/home")
+                        res.redirect("home")
                     } else {
                         res.redirect('/')
                     }
