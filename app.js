@@ -3,9 +3,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require("path")
 const passport = require("passport")
+const LocalStrategy = require('passport-local').Strategy
 const passportLocalMongoose = require('passport-local-mongoose')
 const session = require('express-session')
-const passport = require('passport')
+
+
+
 
 const app = express()
 
@@ -21,7 +24,8 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
+
 
 // Passport and Sessions
 
@@ -43,16 +47,36 @@ const newUserSchema = new mongoose.Schema({
     password: String
 })
 
-newUserSchema.plugin(passportLocalMongoose)
+
 
 const userProfile = mongoose.model(
     "userProfile", newUserSchema
 )
+passport.use(new LocalStrategy(
+    function(username, password, email, done) {
+        userProfile.findOne({username: username, email: email}, function (err, user){
+            if (err) {
+                return done(err)
+            }
+            if (!user) {
+                return done(null, false)
+            }
+            if (!email) {
+                return done(null, false)
+            }
+            if (!user.verifyPassword(password)) {
+                return done(null, false)
+            }
 
-passport.use(userProfile.createStrategy())
+        })
+    }
+))
 
 passport.serializeUser(userProfile.serializeUser())
+
 passport.deserializeUser(userProfile.deserializeUser())
+
+userProfile.plugin(passportLocalMongoose, options)
 
 //Routes
 app.route('/')
@@ -92,46 +116,25 @@ app.route('/register')
             username: req.body.username,
             password: req.body.password
         }
-        userProfile.findOne({email: newUser.email, username: newUser.username}, function(err, foundUsers){
-            if (!foundUsers) {
-                userProfile.register(newUser,function(err){
-                    if (err) {
-                        console.log(err)
-                        res.redirect('/register')
-                    } else {
-                        passport.authenticate('local')(req,res, function(){
-                            console.log('This has works')
-                            res.redirect("/")
-                        })
-                        
-                    }
-                })
-            }
-            
-            else{ if (foundUsers.email != newUser.email) {
-                    if (foundUsers.username != newUser.username){
-                        newUser.save(function(err){
-                            if (err) {
-                                console.log(err)
-                            } else {
-                                res.redirect("/")
-                            }
-                        })
-                        
-                    }
+        userProfile.register({email:newUser.email}, newUser.password, function(err, user) {
+            if (err) { console.log(err) }
+          
+            const authenticate = userProfile.authenticate();
+            authenticate(newUser.username, newUser.password, function(err, result) {
+              if (err) { console.log(err) }
+          
+              // Value 'result' is set to false. The user could not be authenticated since the user is not active
+            });
+          });
+       
 
-            }
-                
-             
-            //Activate Spans on the page and redirect back to the page to reset.
-            //Need to confirm on page if registration has been logged. 
-            //If user already exists - show err,
-            //Else confirm the registation
-                }
+
+
+       
 
         
     })
-    })
+    
 app.route('/home')
     .get(function(req, res){
         res.render('home')
